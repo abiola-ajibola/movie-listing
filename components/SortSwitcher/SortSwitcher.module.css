@@ -1,0 +1,12 @@
+.checkbox:checked + label {
+  color: cornflowerblue;
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkbox + label {
+  font-size: 1.5rem;
+  margin: 0 1rem;
+}
