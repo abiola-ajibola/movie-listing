@@ -40,7 +40,7 @@ npm run build
 npm run test
 ```
 
-## Deploying
+## Deployment
 
 The application can be deployed using any service you prefer. Here I have used Netlify with Github integration.
 
