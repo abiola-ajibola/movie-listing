@@ -29,15 +29,22 @@ npm install
 npm run dev
 ```
 
+### Run Tests
+
+```bash
+npm run test
+```
+
 ### Build the app for production
 
 ```bash
 npm run build
 ```
-### Run Tests
+
+### Run the app for production
 
 ```bash
-npm run test
+npm start
 ```
 
 ## Deployment
@@ -46,23 +53,30 @@ The application can be deployed using any service you prefer. Here I have used N
 
 ### Using Netlify
 1. Signup on Netlify, if you do not already have an account: https://app.netlify.com/signup
+
 2. Install Netlify cli
 ```bash
 npm install netlify-cli -g
 ```
+
 3. Fork the repository
-4. Login to netlify from the cli:
+
+4. Login to netlify from the cli
 ```bash
 netlify login
 ```
-Then follow the netlify login flow.
-5. Initialize a new netlify site:
+5. Follow the netlify login flow
+
+6. Initialize a new netlify site
 ```bash
 netlify init
 ```
-Choose your preferred deployment options for the app in the netlify cli
-6. Push to the `dev` branch to deploy a development/preview app.
-7. Push to `main` branch or merge a pull request into the branch to deploy a production version.
+
+7. Choose your preferred deployment options for the app in the netlify cli
+
+8. Push to the `dev` branch to deploy a development/preview app
+
+9. Push to `main` branch or merge a pull request into the branch to deploy a production version.
 
 ### Environment variables
 In the development environment create a `.env` file in the project root directory and add `API_KEY` as environment variable, the value should be your TMDB API KEY.
