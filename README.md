@@ -1,23 +1,83 @@
-# Next.js + Jest
+# Movie Listing
 
-This example shows how to configure Jest to work with Next.js.
-
-This includes Next.js' built-in support for Global CSS, CSS Modules, and TypeScript!
+This is a simple wep app for listing the top 500 movies on https://themoviedb.org
 
 ## How to Use
 
-Quickly get started using [Create Next App](https://github.com/vercel/next.js/tree/canary/packages/create-next-app#readme)!
+### Clone the repo
 
-In your terminal, run the following command:
-
+Using SSH
 ```bash
-npx create-next-app --example with-jest with-jest-app
-# or
-yarn create next-app --example with-jest with-jest-app
+git clone git@github.com:abiola-ajibola/movie-listing.git
+```
+or
+
+Using https
+```bash
+git clone https://github.com/abiola-ajibola/movie-listing.git
 ```
 
-## Run Jest Tests
+### Install all dependencies
 
 ```bash
-npm test
+npm install
 ```
+
+### Run the app in development environment
+
+```bash
+npm run dev
+```
+
+### Run Tests
+
+```bash
+npm run test
+```
+
+### Build the app for production
+
+```bash
+npm run build
+```
+
+### Run the app for production
+
+```bash
+npm start
+```
+
+## Deployment
+
+The application can be deployed using any service you prefer. Here I have used Netlify with Github integration.
+
+### Using Netlify
+1. Signup on Netlify, if you do not already have an account: https://app.netlify.com/signup
+
+2. Install Netlify cli
+```bash
+npm install netlify-cli -g
+```
+
+3. Fork the repository
+
+4. Login to netlify from the cli
+```bash
+netlify login
+```
+5. Follow the netlify login flow
+
+6. Initialize a new netlify site
+```bash
+netlify init
+```
+
+7. Choose your preferred deployment options for the app in the netlify cli
+
+8. Push to the `dev` branch to deploy a development/preview app
+
+9. Push to `main` branch or merge a pull request into the branch to deploy a production version.
+
+### Environment variables
+In the development environment create a `.env` file in the project root directory and add `API_KEY` as environment variable, the value should be your TMDB API KEY.
+Go to the Netlify web app to set the `API_KEY` environment varaible for production.
