@@ -1,10 +1,6 @@
-/**
- * @jest-environment jsdom
- */
-
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import Home from "../pages/index";
+import renderer from "react-test-renderer";
+import Index from "../pages/index";
 
 const imageBaseUrl = "https://image.tmdb.org/t/p/w300";
 const apiData = [
@@ -61,21 +57,15 @@ const apiData = [
   },
 ];
 
-describe("Home", () => {
-  it("renders a heading", () => {
-    render(<Home imageBaseUrl={imageBaseUrl} apiData={apiData} />);
-
-    const heading = screen.getByRole("heading", {
-      name: /Welcome to My Movies List/,
-    });
-    expect(heading).toBeInTheDocument();
-  });
-
-  it("renders a sub-title", () => {
-    render(<Home imageBaseUrl={imageBaseUrl} apiData={apiData} />);
-    const subTile = screen.getByTestId("subtitle", {
-      name: /Scroll down to see the top 500 movies/,
-    });
-    expect(subTile).toBeInTheDocument();
-  });
+it("renders homepage unchanged", () => {
+  const tree = renderer
+    .create(
+      <Index
+        imageBaseUrl={imageBaseUrl}
+        apiData={apiData}
+        meta={{ page: 1, total_pages: 1, total_results: apiData.length }}
+      />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
 });
