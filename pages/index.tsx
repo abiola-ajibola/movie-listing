@@ -3,6 +3,7 @@ import Head from "next/head";
 import MovieCard from "@/components/MovieCard";
 import SortSwitcher from "@/components/SortSwitcher";
 import styles from "./index.module.css";
+import React from "react";
 
 export async function getServerSideProps() {
   const dummy = new Array(25).fill(1);
