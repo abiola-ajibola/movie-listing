@@ -1,8 +1,14 @@
 import styles from "./FavoriteIcon.module.css";
 
-export default function FavoriteIcon({ favorite = false, onSwitch }) {
+export default function FavoriteIcon({
+  favorite = false,
+  onSwitch,
+}: {
+  favorite?: boolean;
+  onSwitch: () => void;
+}) {
   const handleClick = () => {
-    onSwitch()
+    onSwitch();
   };
   return (
     <span

@@ -1,8 +1,15 @@
-import { useState } from "react";
 import Image from "next/image";
 import FavoriteIcon from "../FavouriteIcon";
 import styles from "./MovieCard.module.css";
-
+interface MovieCardProps {
+  imageUrl: string;
+  title: string;
+  rating: number;
+  date: string;
+  id: number | string;
+  onSwitch: () => void;
+  favorite?: boolean;
+}
 export default function MovieCard({
   imageUrl,
   title,
@@ -11,7 +18,7 @@ export default function MovieCard({
   id,
   onSwitch,
   favorite = false,
-}) {
+}: MovieCardProps) {
   const listingBaseUrl = "https://www.themoviedb.org/movie";
   const year = date.split("-")[0];
   const titleColor = favorite ? "lightray" : "darkgray";
@@ -45,7 +52,11 @@ export default function MovieCard({
                 <h3 className={styles.title} style={{ color: titleColor }}>
                   Title
                 </h3>
-                <p className={styles.value} style={{ color: valueColor }} data-testid="title-text">
+                <p
+                  className={styles.value}
+                  style={{ color: valueColor }}
+                  data-testid="title-text"
+                >
                   {title}
                 </p>
               </li>
