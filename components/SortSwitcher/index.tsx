@@ -1,8 +1,13 @@
+import { ChangeEvent } from "react";
 import styles from "./SortSwitcher.module.css";
 
-export default function SortSwitcher({ onToggle }) {
-  const handleChange = (e) => {
-    onToggle(e.target.value);
+export default function SortSwitcher({
+  onToggle,
+}: {
+  onToggle: (v: "ascending" | "descending") => void;
+}) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onToggle(e.target.value as "ascending" | "descending");
   };
   return (
     <div>
@@ -16,7 +21,9 @@ export default function SortSwitcher({ onToggle }) {
         defaultChecked={true}
         className={styles.checkbox}
       />
-      <label aria-label="ascending" htmlFor="ascending">&#8593;</label>
+      <label aria-label="ascending" htmlFor="ascending">
+        &#8593;
+      </label>
       <input
         type="radio"
         name="switch"
@@ -25,7 +32,9 @@ export default function SortSwitcher({ onToggle }) {
         value="descending"
         className={styles.checkbox}
       />
-      <label aria-label="descending" htmlFor="descending">&#8595;</label>
+      <label aria-label="descending" htmlFor="descending">
+        &#8595;
+      </label>
     </div>
   );
 }

@@ -31,7 +31,7 @@ describe("MovieCard component", () => {
 
     const heading = screen.getByRole("heading", {
       name: /Title/i,
-      level: 3
+      level: 3,
     });
     expect(heading).toBeInTheDocument();
   });
@@ -48,15 +48,14 @@ describe("MovieCard component", () => {
         favorite={favorite}
       />
     );
-    const movieTitle = screen.getByTestId("title-text", {
-      name: title,
-    });
+    const movieTitle = screen.getByTestId("title-text");
     expect(movieTitle).toBeInTheDocument();
+    expect(movieTitle).toHaveTextContent(title);
   });
 
   it("renders the movie image", () => {
-      render(
-        <MovieCard
+    render(
+      <MovieCard
         imageUrl={imageUrl}
         title={title}
         rating={rating}
@@ -65,9 +64,9 @@ describe("MovieCard component", () => {
         onSwitch={onSwitch}
         favorite={favorite}
       />
-      )
+    );
 
-      const image = screen.getByAltText(title);
-      expect(image).toBeInTheDocument();
-  })
+    const image = screen.getByAltText(title);
+    expect(image).toBeInTheDocument();
+  });
 });
