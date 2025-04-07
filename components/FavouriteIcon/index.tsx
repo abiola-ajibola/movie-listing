@@ -13,7 +13,7 @@ export default function FavoriteIcon({
   return (
     <span
       className={styles.star}
-      style={{ color: favorite ? "yellow" : "black" }}
+      style={{ color: favorite ? "#ffbe0b" : "#2b2d42" }}
       onClick={handleClick}
     >
       &#9733;

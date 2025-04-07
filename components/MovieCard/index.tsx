@@ -21,8 +21,8 @@ export default function MovieCard({
 }: MovieCardProps) {
   const listingBaseUrl = "https://www.themoviedb.org/movie";
   const year = date.split("-")[0];
-  const titleColor = favorite ? "lightray" : "darkgray";
-  const valueColor = favorite ? "aliceblue" : "black";
+  // const titleColor = favorite ? "lightray" : "darkgray";
+  const valueColor = favorite ? "#edf2f4" : "#2b2d42";
   const handleSwitch = () => {
     onSwitch();
   };
@@ -30,7 +30,7 @@ export default function MovieCard({
   return (
     <div
       className={styles.cardWrapper}
-      style={{ backgroundColor: favorite ? "darkblue" : "transparent" }}
+      style={{ backgroundColor: favorite ? "#8338ec" : "inherit" }}
     >
       <div className={styles.starWrapper}>
         <FavoriteIcon favorite={favorite} onSwitch={handleSwitch} />
@@ -49,29 +49,20 @@ export default function MovieCard({
           <div className={styles.detailsWrapper}>
             <ul className={styles.cardItemsWrapper}>
               <li>
-                <h3 className={styles.title} style={{ color: titleColor }}>
-                  Title
-                </h3>
-                <p
-                  className={styles.value}
+                <h2
+                  className={styles.value + " " + styles.title}
                   style={{ color: valueColor }}
                   data-testid="title-text"
                 >
                   {title}
-                </p>
+                </h2>
               </li>
               <li>
-                <h3 className={styles.title} style={{ color: titleColor }}>
-                  Current Rating
-                </h3>
-                <p className={styles.value} style={{ color: valueColor }}>
+                <p className={styles.value + " " + styles.rating}>
                   {rating}
                 </p>
               </li>
               <li>
-                <h3 className={styles.title} style={{ color: titleColor }}>
-                  Year
-                </h3>
                 <p className={styles.value} style={{ color: valueColor }}>
                   {year}
                 </p>
