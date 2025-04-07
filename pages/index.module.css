@@ -78,6 +78,10 @@
   line-height: 1.5;
 }
 
+.pageNumber {
+  margin-bottom: 1rem;
+}
+
 @media (max-width: 800px) {
   .title {
     font-size: 3rem;

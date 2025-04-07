@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
+import { GetServerSidePropsContext } from "next";
 import MovieCard from "@/components/MovieCard";
 import SortSwitcher from "@/components/SortSwitcher";
+import { Pagination } from "@/components/Pagination";
 import styles from "./index.module.css";
 
 type Movie = {
@@ -21,8 +23,17 @@ type Movie = {
   vote_count: number;
 };
 
-export async function getServerSideProps() {
-  const dummy = new Array(25).fill(1);
+type Meta = {
+  status_code?: number;
+  status_message?: string;
+  success?: boolean;
+  page?: number;
+  results?: null;
+  total_pages?: number;
+  total_results?: number;
+};
+
+export async function getServerSideProps({ query }: GetServerSidePropsContext) {
   const configResponse = await fetch(
     `https://api.themoviedb.org/3/configuration?api_key=${process.env.API_KEY}`
   );
@@ -30,39 +41,57 @@ export async function getServerSideProps() {
   const {
     images: { secure_base_url, logo_sizes },
   } = configData;
-  const responses = await Promise.all(
-    dummy.map((empty, index) => {
-      return fetch(
-        `https://api.themoviedb.org/3/movie/top_rated?api_key=${
-          process.env.API_KEY
-        }&language=en-US&page=${index + 1}`
-      );
-    })
-  );
 
-  const data = await Promise.all(responses.map((response) => response.json()));
-  const apiData = data.map(({ results }) => results).flat();
-  console.dir(
-    {
-      apiData: apiData[0],
-      data: data[0].results[0],
-      meta: { ...data[0], results: data[0].results[0] },
-      meta1: { ...data[1], results: data[1].results[0] },
-      meta2: { ...data[2], results: data[2].results[0] },
-    },
-    { depth: 5 }
-  );
-  return {
-    props: { apiData, imageBaseUrl: secure_base_url + logo_sizes[4] },
-  };
+  try {
+    const reponse = await fetch(
+      `https://api.themoviedb.org/3/movie/top_rated?api_key=${
+        process.env.API_KEY
+      }&language=en-US&page=${query.page || 1}`
+    );
+    const _data = await reponse.json();
+
+    return {
+      props: {
+        apiData: _data.results || [],
+        meta: {
+          ..._data,
+          results: null,
+          message: _data.status_message || null,
+        },
+        imageBaseUrl: secure_base_url + logo_sizes[4],
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      props: {
+        apiData: [],
+        meta: {},
+        imageBaseUrl: secure_base_url + logo_sizes[4],
+      },
+    };
+  }
 }
+
+const sortMoviesData = (order: "ascending" | "descending", data: Movie[]) => {
+  if (order === "ascending") {
+    return data.sort((a, b) => {
+      return a.vote_average - b.vote_average;
+    });
+  }
+  return data.sort((a, b) => {
+    return b.vote_average - a.vote_average;
+  });
+};
 
 const Home = ({
   apiData,
   imageBaseUrl,
+  meta,
 }: {
   apiData: Movie[];
   imageBaseUrl: string;
+  meta: Meta;
 }) => {
   const [favoriteIds, setFavoriteIds] = useState<{ [key: string]: number }>({});
   const [order, setOrder] = useState<"ascending" | "descending">("ascending");
@@ -94,17 +123,6 @@ const Home = ({
     setOrder(v);
   };
 
-  const moviesData = (order: "ascending" | "descending") => {
-    if (order === "ascending") {
-      return apiData.sort((a, b) => {
-        return a.vote_average - b.vote_average;
-      });
-    }
-    return apiData.sort((a, b) => {
-      return b.vote_average - a.vote_average;
-    });
-  };
-
   return (
     <div className={styles.container}>
       <Head>
@@ -112,15 +130,24 @@ const Home = ({
       </Head>
 
       <main>
-        <h1 className={styles.title}>Welcome to My Movies List</h1>
+        {meta.status_message ? (
+          <h1 className={styles.title + " error"}>{meta.status_message}</h1>
+        ) : (
+          <div>
+            <h1 className={styles.title}>Welcome to My Movies List</h1>
 
-        <p className={styles.description} data-testid="subtitle">
-          Scroll down to see the top 500 movies
-        </p>
-        <div className={styles.switcherWrapper}>
-          <SortSwitcher onToggle={handleToggle} />
-        </div>
-        {moviesData(order).map(
+            <p className={styles.description} data-testid="subtitle">
+              Scroll down to see the movies
+            </p>
+          </div>
+        )}
+        {!!apiData.length && (
+          <div className={styles.switcherWrapper}>
+            <SortSwitcher onToggle={handleToggle} />
+          </div>
+        )}
+        <div className={styles.pageNumber}>Page: {meta.page || null}</div>
+        {sortMoviesData(order, apiData).map(
           ({ backdrop_path, release_date, title, vote_average, id }, index) => (
             <MovieCard
               key={index}
@@ -134,6 +161,11 @@ const Home = ({
             />
           )
         )}
+        <Pagination
+          page={meta.page || 1}
+          perPage={20}
+          total={meta.total_results || 0}
+        />
       </main>
     </div>
   );
